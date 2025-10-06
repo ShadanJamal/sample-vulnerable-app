@@ -1,4 +1,4 @@
-A sample repository containing intentionally insecure code and infrastructure-as-code (IaC) configurations for testing **SAST**, **SCA**, and **IaC** scanning tools.
+A sample repository containing intentionally insecure code and infrastructure-as-code (IaC) configurations for testing **SAST**, **SCA**, and **IaC** scanning tools
 
 ---
 
