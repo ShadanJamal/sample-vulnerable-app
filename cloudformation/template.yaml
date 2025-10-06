@@ -1,0 +1,40 @@
+# NOTE: contains intentional security test patterns for SAST/SCA/IaC scanning.
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Sample CloudFormation template for an application
+
+Resources:
+  AppBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: sample-app-bucket-12345
+      AccessControl: PublicRead                 # Issue 1: public read ACL
+
+  AppRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: AppRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: AppFullPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: '*'                       # Issue 2: wildcard action
+                Resource: '*'                     # Issue 3: wildcard resource
+
+  OpenSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: open-security-group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0                     # Issue 4: SSH open to the world
