@@ -19,21 +19,18 @@ resource "aws_s3_bucket" "app_bucket" {
 
 resource "aws_iam_policy" "app_policy" {
   name        = "app-limited-access"
-  description = "Policy used by instances with limited permissions"
+  description = "Policy used by instances with restricted permissions"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Effect = "Allow"
-        # FIXED: Replaced wildcard "*" with specific actions
-        # NOTE: These are example actions. Adjust based on actual requirements
         Action = [
           "s3:GetObject",
           "s3:PutObject",
           "s3:ListBucket"
         ]
-        # FIXED: Replaced wildcard "*" with specific resource
         Resource = [
           "arn:aws:s3:::sample-app-terraform-bucket-12345",
           "arn:aws:s3:::sample-app-terraform-bucket-12345/*"
